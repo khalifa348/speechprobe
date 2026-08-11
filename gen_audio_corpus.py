@@ -1,7 +1,6 @@
 
-python
 #!/usr/bin/env python3
-"""
+"""gen_audio_corpus.py — hostile audio corpus generator for SpeechProbe QA.
 gen_audio_corpus.py
 
 Hostile audio corpus generator for robustness/fuzz testing of on-device
@@ -86,6 +85,8 @@ def make_wav(
     """
     block_align = num_channels * (bits_per_sample // 8)
     byte_rate = sample_rate * block_align
+    if byte_rate > 0xFFFFFFFF:
+        byte_rate = 0xFFFFFFFF  # lie but packable
 
     fmt_chunk_size = 16
     if audio_format != 1:
