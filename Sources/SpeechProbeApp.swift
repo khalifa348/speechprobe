@@ -581,30 +581,3 @@ struct RootView: View {
         .padding()
     }
 }
-
-
-**`Sources/Info.plist`** (referenced by project.yml; place alongside the Swift source):
-
-xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>en</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.khalifa.speechprobe</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>UIRequiredDeviceCapabilities</key>
-    <array>
-        <string>arm64</string>
-    </array>
-    <key>UIStatusBarHidden</key>
-    <false/>
-</dict>
-</plist>
-
-
----
-
