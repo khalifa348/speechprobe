@@ -1,0 +1,76 @@
+name: Build SpeechProbe (unsigned IPA)
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ main ]
+    paths:
+      - 'project.yml'
+      - 'Sources/**'
+      - '.github/workflows/build-ios.yml'
+
+jobs:
+  build:
+    runs-on: macos-14
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build unsigned .app (Release, generic iOS device)
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project SpeechProbe.xcodeproj \
+            -scheme SpeechProbe \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM="" \
+            build
+
+      - name: Locate built .app and assemble Payload/
+        run: |
+          set -euo pipefail
+          APP_PATH=$(find build/Build/Products -maxdepth 2 -name "*.app" -type d | head -n1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: .app not found"
+            find build/Build/Products -maxdepth 3
+            exit 1
+          fi
+          echo "Found app at: $APP_PATH"
+          mkdir -p out/Payload
+          cp -R "$APP_PATH" out/Payload/
+          ls -la out/Payload/
+
+      - name: Zip unsigned IPA
+        run: |
+          set -euo pipefail
+          cd out
+          zip -r -y ../SpeechProbe-unsigned.ipa Payload
+          cd ..
+          ls -la SpeechProbe-unsigned.ipa
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SpeechProbe-unsigned-ipa
+          path: SpeechProbe-unsigned.ipa
+          retention-days: 14
+
+
+---
+

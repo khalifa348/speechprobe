@@ -1,0 +1,66 @@
+name: SpeechProbe
+options:
+  bundleIdPrefix: com.khalifa
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "15.0"
+  xcodeVersion: "15.0"
+
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.khalifa.speechprobe
+    IPHONEOS_DEPLOYMENT_TARGET: "15.0"
+    SWIFT_VERSION: "5.0"
+    ARCHS: arm64
+    VALID_ARCHS: arm64
+    ONLY_ACTIVE_ARCH: NO
+    CODE_SIGNING_ALLOWED: NO
+    CODE_SIGNING_REQUIRED: NO
+    CODE_SIGN_IDENTITY: ""
+    DEVELOPMENT_TEAM: ""
+    GENERATE_INFOPLIST_FILE: NO
+    INFOPLIST_FILE: Sources/Info.plist
+    PRODUCT_NAME: SpeechProbe
+    ENABLE_BITCODE: NO
+    TARGETED_DEVICE_FAMILY: "1"
+    SUPPORTS_MACCATALYST: NO
+    SWIFT_OBJC_BRIDGING_HEADER: ""
+
+targets:
+  SpeechProbe:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: Sources
+        excludes:
+          - "Info.plist"
+    info:
+      path: Sources/Info.plist
+      properties:
+        CFBundleDisplayName: SpeechProbe
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        CFBundleExecutable: SpeechProbe
+        CFBundlePackageType: APPL
+        LSRequiresIPhoneOS: true
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSMicrophoneUsageDescription: "SpeechProbe needs microphone access to fuzz the live audio capture and speech recognition pipeline."
+        NSSpeechRecognitionUsageDescription: "SpeechProbe needs speech recognition access to fuzz the on-device ASR pipeline with crafted audio files."
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+        UIBackgroundModes: []
+        UIRequiresFullScreen: true
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.khalifa.speechprobe
+    scheme:
+      testTargets: []
+      gatherCoverageData: false
+
+
+---
+
